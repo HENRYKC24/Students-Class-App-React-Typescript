@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "../App.css";
 import { getAllInformation } from "../redux/getAllInformation";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -14,7 +16,7 @@ const Login: React.FC = () => {
 
   const onSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-    getAllInformation(name, dispatch);
+    getAllInformation(name, dispatch, navigate);
   };
 
   return (

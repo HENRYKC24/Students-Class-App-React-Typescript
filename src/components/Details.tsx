@@ -1,7 +1,11 @@
 import React from "react";
 
 const Details: React.FC = () => {
-  return <div>Details</div>;
+  return (
+    <div>
+      now
+    </div>
+  );
 };
 
 export default Details;
