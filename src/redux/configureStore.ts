@@ -8,7 +8,9 @@ const store = configureStore({
     reducer,
   },
   middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(thunk),
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }).concat(thunk),
     preloadedState: initialState,
 });
 
