@@ -1,10 +1,11 @@
 export enum Types {
-  GET_STUDENT,
-  GET_CLASSES
+  SET_STUDENT,
+  SET_COURSE,
+  SET_NAME
 };
 
 export interface ActionType {
-  type: Types.GET_CLASSES | Types.GET_STUDENT;
+  type: Types.SET_COURSE | Types.SET_STUDENT | Types.SET_NAME;
   payload?: Object
 }
 

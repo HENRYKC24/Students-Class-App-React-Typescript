@@ -1,23 +1,17 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import './App.css';
-import { fetchStudent } from './redux/actionCreators';
-import { State } from './redux/actionTypes';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 const App: React.FC = () => {
-  const dispatch = useDispatch();
-  const state = useSelector((state: State) => state);
-  const { reducer: {records} } = state;
-  console.log('records', records);
-  
-  useEffect(() => {
-    console.log(fetchStudent(dispatch));
-  }, [dispatch]);
   return (
-    <div className="App">
-      App
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
