@@ -1,14 +1,16 @@
 import { Dispatch } from "redux";
 import Airtable from "airtable";
 import { setCourses, setEachClassStudents, setName } from "../actionCreators";
+import { NavigateFunction } from "react-router-dom";
 
-export const getAllInformation = async (name: string, dispatch: Dispatch) => {
+export const getAllInformation = async (name: string, dispatch: Dispatch, navigate: NavigateFunction) => {
   const base = new Airtable({ apiKey: process.env.REACT_APP_API_KEY }).base(
     "app8ZbcPx7dkpOnP0"
   );
 
   const studentsTable = base('Students');
   const classesTable = base('Classes');
+  const tempClassMates: [] = [];
 
 
   const getOneStudent = async () => {
@@ -41,6 +43,8 @@ export const getAllInformation = async (name: string, dispatch: Dispatch) => {
     }).firstPage();
     const fields = records.map((record) => record.fields);
     const classNames: any = fields.map((field) => field.Name);
+    console.log(classNames, '<<<>>>>')
+    classNames.push(classNames);
     return classNames;
   }
 
@@ -62,13 +66,16 @@ export const getAllInformation = async (name: string, dispatch: Dispatch) => {
     const fields = records.map((record) => record.fields);
     const classNames: any = fields.map((field) => field.Name);
     const studentsPerClass: any = fields.map((field) => field.Students);
+    // const allClasses: any = [];
     dispatch(setCourses(classNames));
-    const allClasses: any = [];
     studentsPerClass.forEach(async (studentList: string[]) => {
-      const classList = await getStudentsNamesPerClass(studentList);
-      allClasses.push(classList);
+      await getStudentsNamesPerClass(studentList);
+      // allClasses.push(classList);
     });
-    dispatch(setEachClassStudents(allClasses));
+    console.log(tempClassMates, 'mates')
+    dispatch(setEachClassStudents(tempClassMates));
+    // console.log("all classes", allClasses)
   }
   getOneStudent();
+  navigate('/Home');
 };

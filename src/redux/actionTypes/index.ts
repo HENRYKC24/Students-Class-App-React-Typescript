@@ -21,9 +21,19 @@ export interface Record {
 }
 
 export interface Reducer {
-  records: Record[];
+  name: string;
+  courses: string[];
+  eachClassStudents: string[];
 }
 
 export interface State {
   reducer: Reducer;
+}
+
+type StrArr = string[];
+
+export interface Initial {
+  name: string;
+  courses: string[];
+  eachClassStudents: StrArr[];
 }
