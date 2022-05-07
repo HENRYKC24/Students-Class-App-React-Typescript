@@ -1,43 +1,43 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { Reducer, Initial } from '../redux/actionTypes';
 import "../App.css";
-// import Details from "../components/Details";
-import { State } from "../redux/actionTypes";
+import { State, StrArr } from "../redux/actionTypes";
 
 const Home: React.FC = () => {
   const state = useSelector((state: State) => state);
+  const popRef: React.MutableRefObject<{
+    count: number;
+    values: string[];
+  }> = useRef({ count: 1, values: [""] });
   const { reducer } = state;
+  const { name, eachClassStudents } = reducer;
 
-  console.log("records", reducer);
-
-  const {name, courses, eachClassStudents} = reducer;
-  console.log(name, 'name')
-  // const name = reducer && reducer.name;
-  // const courses = reducer.courses;
-  // const eachClassStudents = reducer.eachClassStudents;
-  // const name = reducer.name;\
-  
-  return eachClassStudents[0] ? <div>
-  <h1>{name}</h1>
-    {eachClassStudents.map((classMembers: string[], index: number) => {
-      console.log(classMembers, 'each');
-      // const currentClass = eachClassStudents[index];
-      console.log(classMembers.indexOf(name), 'index')
-      // classMembers.splice(classMembers.indexOf(name), 1);
-      // currentClass.splice(currentClass.indexOf(name));
-      console.log(classMembers, 'currentClass')
-      return (
-        <div key={Math.random().toString()}>
-          <strong>Name</strong>
-          <p>{courses[index]}</p>
-
-          <strong>Students</strong>
-          <p>{classMembers}</p>
-        </div>
-      );
-    })}
-</div> : <p>Loading...</p>;
+  return eachClassStudents[0] ? (
+    <div>
+      <h1>{name}</h1>
+      {eachClassStudents.map((classMembers: string[], index: number) => {
+        console.log(classMembers, "8889999");
+        // let one: string | undefined = "";
+        if (popRef.current.count < eachClassStudents.length + 1) {
+          const i: any = classMembers.pop();
+          popRef.current.values.push(i);
+          // console.log("One", one);
+          popRef.current.count += 1;
+        }
+        // console.log("One outside if statement", one);
+        return (
+          <div key={Math.random().toString()}>
+            <strong>Name</strong>
+            <p>{popRef.current.values[index + 1]}</p>
+            <strong>Students</strong>
+            <p>{classMembers.toString()}</p>
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    <p>Loading...</p>
+  );
 };
 
 export default Home;

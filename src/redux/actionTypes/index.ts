@@ -30,7 +30,7 @@ export interface State {
   reducer: Reducer;
 }
 
-type StrArr = string[];
+export type StrArr = string[];
 
 export interface Initial {
   name: string;
