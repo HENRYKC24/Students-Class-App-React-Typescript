@@ -6,9 +6,8 @@ export const setEachClassStudents = (payload: FieldSet[]) => ({
   payload,
 });
 
-export const setCourses = (payload: string[]) => ({
-  type: Types.SET_COURSE,
-  payload,
+export const logout = () => ({
+  type: Types.LOGOUT
 });
 
 export const setName = (payload: string) => ({

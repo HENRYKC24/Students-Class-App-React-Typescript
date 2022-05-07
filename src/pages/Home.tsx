@@ -1,43 +1,53 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Reducer, Initial } from '../redux/actionTypes';
+import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../App.css";
-// import Details from "../components/Details";
 import { State } from "../redux/actionTypes";
+import { logout } from "../redux/actionCreators";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const state = useSelector((state: State) => state);
+  const popRef: React.MutableRefObject<{
+    count: number;
+    values: string[];
+  }> = useRef({ count: 1, values: [""] });
   const { reducer } = state;
+  const { name, eachClassStudents } = reducer;
 
-  console.log("records", reducer);
+  const signOut = () => {
+    navigate("/");
+    dispatch(logout());
+  };
 
-  const {name, courses, eachClassStudents} = reducer;
-  console.log(name, 'name')
-  // const name = reducer && reducer.name;
-  // const courses = reducer.courses;
-  // const eachClassStudents = reducer.eachClassStudents;
-  // const name = reducer.name;\
-  
-  return eachClassStudents[0] ? <div>
-  <h1>{name}</h1>
-    {eachClassStudents.map((classMembers: string[], index: number) => {
-      console.log(classMembers, 'each');
-      // const currentClass = eachClassStudents[index];
-      console.log(classMembers.indexOf(name), 'index')
-      // classMembers.splice(classMembers.indexOf(name), 1);
-      // currentClass.splice(currentClass.indexOf(name));
-      console.log(classMembers, 'currentClass')
-      return (
-        <div key={Math.random().toString()}>
-          <strong>Name</strong>
-          <p>{courses[index]}</p>
-
-          <strong>Students</strong>
-          <p>{classMembers}</p>
-        </div>
-      );
-    })}
-</div> : <p>Loading...</p>;
+  return eachClassStudents[0] ? (
+    <div className="container">
+      <div className="logout">
+        <button onClick={() => signOut()}>Logout</button>
+      </div>
+      <h2 className="students-name">{name}'s Classes</h2>
+      <div className="cards-container">
+        {eachClassStudents.map((classMembers: string[], index: number) => {
+          if (popRef.current.count < eachClassStudents.length + 1) {
+            const i: any = classMembers.pop();
+            popRef.current.values.push(i);
+            popRef.current.count += 1;
+          }
+          return (
+            <div className="card" key={Math.random().toString()}>
+              <strong className="class-name">Name</strong>
+              <p className="class">{popRef.current.values[index + 1]}</p>
+              <strong className="student">Students</strong>
+              <p className="stundents-classmates">{classMembers.join(", ")}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  ) : (
+    <p className="loading">Loading...</p>
+  );
 };
 
 export default Home;

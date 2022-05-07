@@ -3,14 +3,13 @@ import { Types, ActionType } from "./actionTypes";
 // Define initial
 export const initialState: Object = {
   name: '',
-  courses: [],
   eachClassStudents: []
 };
 
 // Define reducer
 export const reducer = (state = initialState, action: ActionType) => {
   const { payload, type } = action;
-  const { SET_STUDENT, SET_COURSE, SET_NAME } = Types;
+  const { SET_STUDENT, SET_NAME, LOGOUT } = Types;
 
   switch (type) {
     case SET_STUDENT:
@@ -19,11 +18,8 @@ export const reducer = (state = initialState, action: ActionType) => {
         eachClassStudents: payload,
       };
 
-    case SET_COURSE:
-      return {
-        ...state,
-        courses: payload,
-      };
+    case LOGOUT:
+      return initialState;
 
     case SET_NAME:
       return {

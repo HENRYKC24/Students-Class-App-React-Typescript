@@ -1,11 +1,11 @@
 export enum Types {
   SET_STUDENT,
-  SET_COURSE,
-  SET_NAME
+  SET_NAME,
+  LOGOUT
 };
 
 export interface ActionType {
-  type: Types.SET_COURSE | Types.SET_STUDENT | Types.SET_NAME;
+  type: Types.SET_STUDENT | Types.SET_NAME | Types.LOGOUT;
   payload?: Object
 }
 
@@ -22,7 +22,6 @@ export interface Record {
 
 export interface Reducer {
   name: string;
-  courses: string[];
   eachClassStudents: StrArr[];
 }
 
@@ -30,10 +29,9 @@ export interface State {
   reducer: Reducer;
 }
 
-type StrArr = string[];
+export type StrArr = string[];
 
 export interface Initial {
   name: string;
-  courses: string[];
   eachClassStudents: StrArr[];
 }
