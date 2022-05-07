@@ -16,22 +16,24 @@ const Home: React.FC = () => {
   // const name = reducer && reducer.name;
   // const courses = reducer.courses;
   // const eachClassStudents = reducer.eachClassStudents;
-  // const name = reducer.name;
+  // const name = reducer.name;\
   
   return eachClassStudents[0] ? <div>
   <h1>{name}</h1>
-    {courses.map((course: string, index: number) => {
-      console.log(eachClassStudents, 'each');
-      const currentClass = eachClassStudents[index];
+    {eachClassStudents.map((classMembers: string[], index: number) => {
+      console.log(classMembers, 'each');
+      // const currentClass = eachClassStudents[index];
+      console.log(classMembers.indexOf(name), 'index')
+      // classMembers.splice(classMembers.indexOf(name), 1);
       // currentClass.splice(currentClass.indexOf(name));
-      console.log(currentClass, 'currentClass')
+      console.log(classMembers, 'currentClass')
       return (
         <div key={Math.random().toString()}>
           <strong>Name</strong>
-          <p>{course}</p>
+          <p>{courses[index]}</p>
 
           <strong>Students</strong>
-          <strong>{eachClassStudents[index].toString()}</strong>
+          <p>{classMembers}</p>
         </div>
       );
     })}

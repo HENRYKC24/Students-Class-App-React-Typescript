@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import Airtable from "airtable";
+import Airtable, { FieldSet } from "airtable";
 import { setCourses, setEachClassStudents, setName } from "../actionCreators";
 import { NavigateFunction } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export const getAllInformation = async (name: string, dispatch: Dispatch, naviga
 
   const studentsTable = base('Students');
   const classesTable = base('Classes');
-  const tempClassMates: [] = [];
+  let tempClassMates: FieldSet[] = [];
 
 
   const getOneStudent = async () => {
@@ -43,9 +43,14 @@ export const getAllInformation = async (name: string, dispatch: Dispatch, naviga
     }).firstPage();
     const fields = records.map((record) => record.fields);
     const classNames: any = fields.map((field) => field.Name);
-    console.log(classNames, '<<<>>>>')
-    classNames.push(classNames);
-    return classNames;
+    if (classNames.includes(name)) {
+      classNames.splice(classNames.indexOf(name), 1);
+    }
+    tempClassMates = [...tempClassMates, classNames];
+    
+    console.log(tempClassMates, '<<<>>>>')
+    // classNames.push(classNames);
+    return tempClassMates;
   }
 
   const getClasses = async (classes: string[]) => {
@@ -69,13 +74,19 @@ export const getAllInformation = async (name: string, dispatch: Dispatch, naviga
     // const allClasses: any = [];
     dispatch(setCourses(classNames));
     studentsPerClass.forEach(async (studentList: string[]) => {
-      await getStudentsNamesPerClass(studentList);
+      const toUse = await getStudentsNamesPerClass(studentList);
       // allClasses.push(classList);
+      console.log(toUse, 'toUse')
+      if (toUse.length === studentsPerClass.length) {
+
+        dispatch(setEachClassStudents(toUse));
+      }
+      tempClassMates = toUse;
     });
     console.log(tempClassMates, 'mates')
-    dispatch(setEachClassStudents(tempClassMates));
     // console.log("all classes", allClasses)
   }
   getOneStudent();
+  console.log(tempClassMates, '((()))))')
   navigate('/Home');
 };

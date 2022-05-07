@@ -23,7 +23,7 @@ export interface Record {
 export interface Reducer {
   name: string;
   courses: string[];
-  eachClassStudents: string[];
+  eachClassStudents: StrArr[];
 }
 
 export interface State {
