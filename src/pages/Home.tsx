@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../App.css";
-import { State, StrArr } from "../redux/actionTypes";
+import { State } from "../redux/actionTypes";
+import { logout } from "../redux/actionCreators";
+import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const state = useSelector((state: State) => state);
   const popRef: React.MutableRefObject<{
     count: number;
@@ -12,31 +16,37 @@ const Home: React.FC = () => {
   const { reducer } = state;
   const { name, eachClassStudents } = reducer;
 
+  const signOut = () => {
+    navigate("/");
+    dispatch(logout());
+  };
+
   return eachClassStudents[0] ? (
-    <div>
-      <h1>{name}</h1>
-      {eachClassStudents.map((classMembers: string[], index: number) => {
-        console.log(classMembers, "8889999");
-        // let one: string | undefined = "";
-        if (popRef.current.count < eachClassStudents.length + 1) {
-          const i: any = classMembers.pop();
-          popRef.current.values.push(i);
-          // console.log("One", one);
-          popRef.current.count += 1;
-        }
-        // console.log("One outside if statement", one);
-        return (
-          <div key={Math.random().toString()}>
-            <strong>Name</strong>
-            <p>{popRef.current.values[index + 1]}</p>
-            <strong>Students</strong>
-            <p>{classMembers.toString()}</p>
-          </div>
-        );
-      })}
+    <div className="container">
+      <div className="logout">
+        <button onClick={() => signOut()}>Logout</button>
+      </div>
+      <h2 className="students-name">{name}'s Classes</h2>
+      <div className="cards-container">
+        {eachClassStudents.map((classMembers: string[], index: number) => {
+          if (popRef.current.count < eachClassStudents.length + 1) {
+            const i: any = classMembers.pop();
+            popRef.current.values.push(i);
+            popRef.current.count += 1;
+          }
+          return (
+            <div className="card" key={Math.random().toString()}>
+              <strong className="class-name">Name</strong>
+              <p className="class">{popRef.current.values[index + 1]}</p>
+              <strong className="student">Students</strong>
+              <p className="stundents-classmates">{classMembers.join(", ")}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   ) : (
-    <p>Loading...</p>
+    <p className="loading">Loading...</p>
   );
 };
 
